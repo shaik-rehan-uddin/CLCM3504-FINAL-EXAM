@@ -1,7 +1,9 @@
-# LAB-CLCM-3404-DOCKER-LAB
-Lab of CLCM-3404 Course to deploy a static site with Docker and Github Actions
+# CLCM 3504 - Final Exam - TechCo Website Updagrade
 
-##  Technologies used :
+Final Exam of CLCM-3504 Course to Upgrade the Exisiting website with Docker and Github Actions
+
+## Technologies used :
+
 - HTML, CSS, JavaScript
 - Docker
 - GitHub Actions
