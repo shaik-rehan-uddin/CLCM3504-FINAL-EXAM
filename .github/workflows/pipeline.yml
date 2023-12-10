@@ -23,14 +23,13 @@ jobs:
       run: |
         docker buildx create --use
         docker buildx inspect --bootstrap
-        docker buildx build --load -t my-application:latest .
-        docker tag my-application:latest ${{ secrets.DOCKERHUB_USERNAME }}/my-application:latest
+        docker buildx build --load -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest .
         echo $(docker images)
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-application:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest
 
     - name: Check Docker Image Build
       run: |
-        if docker inspect my-application:latest &> /dev/null; then
+        if docker inspect ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest &> /dev/null; then
           echo "Docker image built successfully. Test passed!"
         else
           echo "Docker image not found. Test failed."
@@ -39,7 +38,7 @@ jobs:
 
     - name: Check Docker Image Pushed
       run: |
-        if docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/my-application:latest &> /dev/null; then
+        if docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest &> /dev/null; then
           echo "Docker image pushed to Docker Hub successfully. Test passed!"
         else
           echo "Docker image not found on Docker Hub. Test failed."
@@ -61,15 +60,15 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            existing_container=$(docker ps -q -f name=my-application)
+            existing_container=$(docker ps -q -f name=${{ secrets.DOCKERHUB_REPO }})
             if [ ! -z "$existing_container" ]; then
                 echo "Stopping and removing existing container..."
                 docker stop $existing_container
                 docker rm $existing_container
             fi
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-application:latest
-            docker run -d -p 80:80 --name my-application ${{ secrets.DOCKERHUB_USERNAME }}/my-application:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest
+            docker run -d -p 80:80 --name ${{ secrets.DOCKERHUB_REPO }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest
             docker image prune -f
   
   testing:
