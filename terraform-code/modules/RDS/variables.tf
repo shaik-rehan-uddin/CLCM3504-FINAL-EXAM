@@ -1,5 +1,5 @@
 variable "db_name" {
-  default = "main-db"
+  default = "rehan-3504-final-exam-main-db"
 }
 
 variable "db_size" {

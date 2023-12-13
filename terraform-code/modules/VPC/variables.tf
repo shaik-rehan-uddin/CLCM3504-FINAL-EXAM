@@ -1,4 +1,4 @@
 variable "vpc_name" {
-  default = "project-vpc"
+  default = "rehan-3504-final-exam-vpc"
 }
 

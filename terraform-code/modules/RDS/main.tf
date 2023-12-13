@@ -1,5 +1,5 @@
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "database-subnet-group"
+  name       = "rehan-3504-final-exam-database-subnet-group"
   subnet_ids = [var.vpc_public_subnet_1_id, var.vpc_public_subnet_2_id]
   tags = {
     Name = "Database subnet group"
